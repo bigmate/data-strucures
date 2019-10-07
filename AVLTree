@@ -83,15 +83,59 @@ class AVLTree(object):
     def _height(node: Node)->int:
         return -1 if node is None else node.height
 
+    @property
+    def _is_balanced(self)->bool:
+        """Short and smart way"""
+        if self.root.left and self.root.right:
+            return abs(self.root.left.height - self.root.right.height) <= 1
+        return (self.root.left or self.root.right).height <= 1
+
+    @property
+    def is_balanced(self)->bool:
+        _, flag = AVLTree._is_balanced_(self.root)
+        return flag
+
+    @staticmethod
+    def _is_balanced_(root: Node)->(int, bool):
+        if root is None:
+            return -1, True
+        lh, lf = AVLTree._is_balanced_(root.left)
+        rh, rf = AVLTree._is_balanced_(root.right)
+        if not lf or not rf:
+            return max(lh, rh) + 1, False
+        return max(lh, rh) + 1, abs(lh - rh) <= 1
+
+    def is_perfect(self)->bool:
+        # Perfect Tree size is (2^(height + 1) - 1)
+        if self.root is None:
+            raise ValueError("Tree is empty")
+        return 2 ** (self.root.height + 1) - 1 == self.size()
+
+    def size(self):
+        return AVLTree._size(self.root)
+
+    @staticmethod
+    def _size(root: Node)->int:
+        if root is None:
+            return 0
+        return AVLTree._size(root.left) + AVLTree._size(root.right) + 1
+
 
 tree = AVLTree()
-# tree.insert(10)
-# tree.insert(12)
-# tree.insert(11)
-# tree.insert(8)
-# tree.insert(13)
-# tree.insert(16)
-# tree.insert(12)
-# tree.insert(13)
-# tree.insert(9)
+tree.insert(10)
+tree.insert(12)
+tree.insert(11)
+tree.insert(8)
+tree.insert(13)
+tree.insert(16)
+tree.insert(12)
+tree.insert(13)
+tree.insert(9)
+tree.insert(11)
+tree.insert(17)
+tree.insert(7)
+tree.insert(8)
+tree.insert(9)
+tree.insert(10)
 
+print(tree.is_perfect())
