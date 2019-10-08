@@ -1,12 +1,22 @@
 class Heap(object):
-    def __init__(self, size: int, is_max: bool = True):
-        self._items = [None] * size
+    def __init__(self, capacity: int, arr: list = None, is_max: bool = True):
         self.size = 0
         self.is_max = is_max
+        if arr is not None:
+            self.size = len(arr)
+
+            if self.size > capacity:
+                raise ValueError('Size overflow')
+
+            self._items = self.heapify(arr, self.is_max)
+            self._items.extend([None] * (capacity - self.size))
+            return
+
+        self._items = [None] * capacity
 
     def insert(self, val):
         if self.is_full:
-            raise ValueError('Tree overflowed')
+            raise ValueError('Space overflowed')
         self._items[self.size] = val
         self.size += 1
         if self.is_max:
@@ -73,6 +83,33 @@ class Heap(object):
         return self.right_i(p) < self.size
 
     @staticmethod
+    def heapify(arr: list, is_max: bool)->list:
+        for i in range(len(arr)//2 - 1, -1, -1):
+            Heap._heapify(arr, i, is_max)
+        return arr
+
+    @staticmethod
+    def _heapify(arr: list, i: int, is_max: bool):
+        index = i
+        left = i * 2 + 1
+        right = i * 2 + 2
+        if is_max:
+            if left < len(arr) and arr[left] > arr[index]:
+                index = left
+            if right < len(arr) and arr[right] > arr[index]:
+                index = right
+        else:
+            if left < len(arr) and arr[left] < arr[index]:
+                index = left
+            if right < len(arr) and arr[right] < arr[index]:
+                index = right
+        if index == i:
+            return
+        # swap
+        arr[i], arr[index] = arr[index], arr[i]
+        Heap._heapify(arr, index, is_max)
+
+    @staticmethod
     def left_i(p: int)->int:
         return 2*p + 1
 
@@ -92,6 +129,10 @@ class Heap(object):
     def is_empty(self):
         return self.size == 0
 
+    @property
+    def items(self):
+        return self._items
+
     def swap(self, i, p):
         self._items[i], self._items[p] = self._items[p], self._items[i]
 
@@ -101,15 +142,3 @@ class Heap(object):
     def __repr__(self):
         return str(self)
 
-
-# heap = Heap(6, is_max=False)
-# 
-# heap.insert(12)
-# heap.insert(13)
-# heap.insert(19)
-# heap.insert(18)
-# heap.insert(17)
-# heap.insert(11)
-# 
-# for _ in range(6):
-#     print(heap.remove())
