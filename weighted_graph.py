@@ -48,11 +48,12 @@ class WeightedGraph:
         return str(self)
 
 
-g = WeightedGraph()
-g.add_node("A")
-g.add_node("B")
-g.add_node("C")
-g.add_edge("A", "B", 4)
-g.add_edge("B", "C", 8)
-g.add_edge("C", "A", 2)
-print(g)
+if __name__ == "__main__":
+    g = WeightedGraph()
+    g.add_node("A")
+    g.add_node("B")
+    g.add_node("C")
+    g.add_edge("A", "B", 4)
+    g.add_edge("B", "C", 8)
+    g.add_edge("C", "A", 2)
+    print(g)
