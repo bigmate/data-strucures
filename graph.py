@@ -167,18 +167,19 @@ class Graph:
         return False
 
 
-graph = Graph()
-graph.add_node("X")
-graph.add_node("A")
-graph.add_node("B")
-graph.add_node("P")
+if __name__ == "__main__":
+    graph = Graph()
+    graph.add_node("X")
+    graph.add_node("A")
+    graph.add_node("B")
+    graph.add_node("P")
 
-graph.add_edge("X", "B")
-graph.add_edge("X", "A")
-graph.add_edge("A", "P")
-graph.add_edge("B", "P")
-graph.add_edge("P", "X")
+    graph.add_edge("X", "B")
+    graph.add_edge("X", "A")
+    graph.add_edge("A", "P")
+    graph.add_edge("B", "P")
+    graph.add_edge("P", "X")
 
-print(graph)
-print(graph.has_cycle())
+    print(graph)
+    print(graph.has_cycle())
 
