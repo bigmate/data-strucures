@@ -56,15 +56,15 @@ class Heap {
         let left = k * 2;
         let right = left + 1;
         while (k < this.len) {
-            let max
+            let max;
             if (left <= this.len && right <= this.len) {
                 if (this._arr[k] > this._arr[left] && this._arr[k] > this._arr[right]) break;
                 max = this._arr[left] > this._arr[right] ? left : right;
             } else if (left <= this.len) {
                 if (this._arr[k] > this._arr[left]) break;
-                max = left
+                max = left;
             } else {
-                break
+                break;
             }
             this.exchange(k, max);
             k = max;
@@ -76,6 +76,16 @@ class Heap {
     leParent(k) {
         return this._arr[Math.floor(k / 2)] > this._arr[k];
     }
+
+    toString() {
+        return "[" + this._arr.slice(1).join(", ") + "]";
+    }
+
+    sort() {
+        while (this.len > 1) {
+            this.delMax()
+        }
+    }
 }
 
-export { Heap }
+export { Heap };
